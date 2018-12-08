@@ -1,9 +1,16 @@
+require "kamakura/attribute"
 require "kamakura/version"
 
 module Kamakura
   module ClassMethods
-    def attribute(name)
+    def attribute(name, type)
+      name = name.to_sym
+      register_attribute(name, type)
       define_attribute_reader_method(name)
+    end
+
+    def attribute_set
+      @__attribute_set ||= {}
     end
 
     private
@@ -15,6 +22,10 @@ module Kamakura
         end
       RUBY
     end
+
+    def register_attribute(name, type)
+      attribute_set[name] = Attribute.new(name, type)
+    end
   end
 
   def self.included(klass)
@@ -22,7 +33,7 @@ module Kamakura
   end
 
   def initialize(attributes = {})
-    @__attributes = symbolize_keys(attributes).freeze
+    @__attributes = parse_attributes(attributes).freeze
   end
 
   def attributes
@@ -35,9 +46,11 @@ module Kamakura
 
   private
 
-  def symbolize_keys(hash)
-    hash.inject({}) do |s, (k, v)|
-      s[k.to_sym] = v
+  def parse_attributes(hash)
+    hash.inject({}) do |s, (name, value)|
+      name = name.to_sym
+      attribute = self.class.attribute_set[name]
+      s[name] = attribute ? attribute.parse(value) : value
       s
     end
   end
