@@ -6,7 +6,7 @@ module Kamakura
     attr_reader :name, :type
 
     def initialize(name, type)
-      @name = name
+      @name = name.to_sym
 
       if type.is_a?(Array)
         @type = CollectionType.new(type[0])

@@ -4,9 +4,9 @@ require "kamakura/version"
 module Kamakura
   module ClassMethods
     def attribute(name, type)
-      name = name.to_sym
-      register_attribute(name, type)
-      define_attribute_reader_method(name)
+      attribute = Attribute.new(name, type)
+      register_attribute(attribute)
+      define_attribute_reader_method(attribute)
     end
 
     def parse(attributes = {})
@@ -19,7 +19,8 @@ module Kamakura
 
     private
 
-    def define_attribute_reader_method(name)
+    def define_attribute_reader_method(attribute)
+      name = attribute.name
       class_eval <<~RUBY
         def #{name}
           self[:"#{name}"]
@@ -27,8 +28,8 @@ module Kamakura
       RUBY
     end
 
-    def register_attribute(name, type)
-      attribute_set[name] = Attribute.new(name, type)
+    def register_attribute(attribute)
+      attribute_set[attribute.name] = attribute
     end
   end
 
