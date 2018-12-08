@@ -1,6 +1,16 @@
 require "kamakura/version"
 
 module Kamakura
+  module ClassMethods
+    def attribute(name)
+      define_method(name) { self[name] }
+    end
+  end
+
+  def self.included(klass)
+    klass.extend(ClassMethods)
+  end
+
   def initialize(attributes = {})
     @__attributes = symbolize_keys(attributes).freeze
   end
