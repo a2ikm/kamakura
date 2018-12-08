@@ -3,7 +3,11 @@ require "kamakura/version"
 module Kamakura
   module ClassMethods
     def attribute(name)
-      define_method(name) { self[name] }
+      class_eval <<~RUBY
+        def #{name}
+          self[:"#{name}"]
+        end
+      RUBY
     end
   end
 
