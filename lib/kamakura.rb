@@ -9,6 +9,10 @@ module Kamakura
       define_attribute_reader_method(name)
     end
 
+    def parse(attributes = {})
+      new(attributes)
+    end
+
     def attribute_set
       @__attribute_set ||= {}
     end

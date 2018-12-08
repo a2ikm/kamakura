@@ -1,6 +1,13 @@
 require "test_helper"
 
 class KamakuraTest < Minitest::Test
+  class Address
+    include Kamakura
+
+    attribute :country, String
+    attribute :state, String
+  end
+
   class User
     include Kamakura
 
@@ -8,6 +15,7 @@ class KamakuraTest < Minitest::Test
     attribute :age, Integer
     attribute :active, Boolean
     attribute :friend_ids, [Integer]
+    attribute :address, Address
   end
 
   def test_attributes
@@ -50,5 +58,11 @@ class KamakuraTest < Minitest::Test
     assert_equal 31, user.age
     assert_equal true, user.active
     assert_equal [1, 2], user.friend_ids
+  end
+
+  def test_nested_attributes
+    user = User.new(:address => { :country => "US", :state => "Alabama" })
+    assert_equal "US", user.address.country
+    assert_equal "Alabama", user.address.state
   end
 end
