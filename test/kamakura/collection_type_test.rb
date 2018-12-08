@@ -12,7 +12,7 @@ class KamakuraCollectionTypeTest < Minitest::Test
     assert_equal [1234], type.parse(["1234"])
   end
 
-  def test_parse_value_in_array
+  def test_parse_value_not_in_array
     type = Kamakura::CollectionType.new(Kamakura::Integer)
     assert_equal [1234], type.parse(1234)
     assert_equal [1234], type.parse("1234")
