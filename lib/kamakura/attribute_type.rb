@@ -16,4 +16,10 @@ module Kamakura
   Integer = AttributeType.new do |value|
     value.nil? ? nil : Kernel.Integer(value) rescue nil
   end
+
+  TRUE_VALUES = [true, "true", 1, "1"].freeze
+
+  Boolean = AttributeType.new do |value|
+    value.nil? ? nil : TRUE_VALUES.include?(value)
+  end
 end
