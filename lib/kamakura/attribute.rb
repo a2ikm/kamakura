@@ -1,3 +1,4 @@
+require "kamakura/collection_type"
 require "kamakura/value_type"
 
 module Kamakura
@@ -6,7 +7,12 @@ module Kamakura
 
     def initialize(name, type)
       @name = name
-      @type = type
+
+      if type.is_a?(Array)
+        @type = CollectionType.new(type[0])
+      else
+        @type = type
+      end
     end
 
     def parse(value)
