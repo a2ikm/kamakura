@@ -3,8 +3,8 @@ require "kamakura/version"
 
 module Kamakura
   module ClassMethods
-    def attribute(name, type)
-      attribute = Attribute.new(name, type)
+    def attribute(name, type, options = {})
+      attribute = Attribute.new(name, type, options)
       register_attribute(attribute)
       define_attribute_reader_method(attribute)
     end
@@ -29,7 +29,7 @@ module Kamakura
     end
 
     def register_attribute(attribute)
-      attribute_set[attribute.name] = attribute
+      attribute_set[attribute.key] = attribute
     end
   end
 
@@ -52,10 +52,14 @@ module Kamakura
   private
 
   def parse_attributes(hash)
-    hash.inject({}) do |s, (name, value)|
-      name = name.to_sym
-      attribute = self.class.attribute_set[name]
-      s[name] = attribute ? attribute.parse(value) : value
+    hash.inject({}) do |s, (key, value)|
+      key = key.to_sym
+      attribute = self.class.attribute_set[key]
+      if attribute
+        s[attribute.name] = attribute.parse(value)
+      else
+        s[key] = value
+      end
       s
     end
   end

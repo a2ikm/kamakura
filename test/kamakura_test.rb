@@ -16,6 +16,7 @@ class KamakuraTest < Minitest::Test
     attribute :active, Boolean
     attribute :friend_ids, [Integer]
     attribute :address, Address
+    attribute :card_number, Integer, key: :cardNumber
   end
 
   def test_attributes
@@ -64,5 +65,15 @@ class KamakuraTest < Minitest::Test
     user = User.new(:address => { :country => "US", :state => "Alabama" })
     assert_equal "US", user.address.country
     assert_equal "Alabama", user.address.state
+  end
+
+  def test_attribute_key_in_symbol
+    user = User.new(:cardNumber => "1234567890")
+    assert_equal 1234567890, user.card_number
+  end
+
+  def test_attribute_key_in_string
+    user = User.new("cardNumber" => "1234567890")
+    assert_equal 1234567890, user.card_number
   end
 end
