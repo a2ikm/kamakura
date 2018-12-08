@@ -1,11 +1,12 @@
 require "test_helper"
 
 class KamakuraTest < Minitest::Test
-  def test_that_it_has_a_version_number
-    refute_nil ::Kamakura::VERSION
+  class User
+    include Kamakura
   end
 
-  def test_it_does_something_useful
-    assert false
+  def test_attributes
+    user = User.new(:name => "Piotr", :age => 31)
+    assert_equal({ :name => "Piotr", :age => 31 }, user.attributes)
   end
 end

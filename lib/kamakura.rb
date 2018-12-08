@@ -1,6 +1,11 @@
 require "kamakura/version"
 
 module Kamakura
-  class Error < StandardError; end
-  # Your code goes here...
+  def initialize(attributes = {})
+    @__attributes = attributes.dup.freeze
+  end
+
+  def attributes
+    @__attributes
+  end
 end
