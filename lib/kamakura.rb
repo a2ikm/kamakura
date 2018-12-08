@@ -3,6 +3,12 @@ require "kamakura/version"
 module Kamakura
   module ClassMethods
     def attribute(name)
+      define_attribute_reader_method(name)
+    end
+
+    private
+
+    def define_attribute_reader_method(name)
       class_eval <<~RUBY
         def #{name}
           self[:"#{name}"]
