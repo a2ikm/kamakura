@@ -1,4 +1,4 @@
-require "kamakura/attribute_type"
+require "kamakura/value_type"
 
 module Kamakura
   class Attribute

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class KamakuraAttributeTypeTest < Minitest::Test
+class KamakuraValueTypeTest < Minitest::Test
   def test_string_parse
     assert_equal "abcd", Kamakura::String.parse("abcd")
     assert_nil Kamakura::String.parse(nil)

@@ -1,5 +1,5 @@
 module Kamakura
-  class AttributeType
+  class ValueType
     def initialize(&parser)
       @parser = parser
     end
@@ -9,17 +9,17 @@ module Kamakura
     end
   end
 
-  String = AttributeType.new do |value|
+  String = ValueType.new do |value|
     value.nil? ? nil : Kernel.String(value)
   end
 
-  Integer = AttributeType.new do |value|
+  Integer = ValueType.new do |value|
     value.nil? ? nil : Kernel.Integer(value) rescue nil
   end
 
   TRUE_VALUES = [true, "true", 1, "1"].freeze
 
-  Boolean = AttributeType.new do |value|
+  Boolean = ValueType.new do |value|
     value.nil? ? nil : TRUE_VALUES.include?(value)
   end
 end
