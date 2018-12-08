@@ -9,6 +9,10 @@ module Kamakura
     @__attributes
   end
 
+  def [](name)
+    @__attributes[name.to_sym]
+  end
+
   private
 
   def symbolize_keys(hash)
