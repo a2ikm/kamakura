@@ -22,4 +22,8 @@ module Kamakura
   Boolean = ValueType.new do |value|
     value.nil? ? nil : TRUE_VALUES.include?(value)
   end
+
+  Time = ValueType.new do |value|
+    value.nil? ? nil : ::Time.at(value.to_i)
+  end
 end

@@ -26,4 +26,10 @@ class KamakuraValueTypeTest < Minitest::Test
     assert_equal false, Kamakura::Boolean.parse(0)
     assert_equal false, Kamakura::Boolean.parse("0")
   end
+
+  def test_time_parse
+    assert_nil Kamakura::Time.parse(nil)
+    assert_equal Time.at(1), Kamakura::Time.parse(1)
+    assert_equal Time.at(1), Kamakura::Time.parse("1")
+  end
 end
