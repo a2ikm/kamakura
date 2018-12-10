@@ -4,8 +4,8 @@ module Kamakura
       @parser = parser
     end
 
-    def parse(value)
-      @parser.call(value)
+    def parse(value, **options)
+      @parser.call(value, options)
     end
   end
 
@@ -23,21 +23,21 @@ module Kamakura
     end
   end
 
-  define_value_type(:string) do |value|
+  define_value_type(:string) do |value, **options|
     value.nil? ? nil : Kernel.String(value)
   end
 
-  define_value_type(:integer) do |value|
+  define_value_type(:integer) do |value, **options|
     value.nil? ? nil : Kernel.Integer(value) rescue nil
   end
 
   TRUE_VALUES = [true, "true", 1, "1"].freeze
 
-  define_value_type(:boolean) do |value|
+  define_value_type(:boolean) do |value, **options|
     value.nil? ? nil : TRUE_VALUES.include?(value)
   end
 
-  define_value_type(:time) do |value|
+  define_value_type(:time) do |value, **options|
     value.nil? ? nil : ::Time.at(value.to_i)
   end
 end

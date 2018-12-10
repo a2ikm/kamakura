@@ -6,8 +6,8 @@ module Kamakura
       @type = type
     end
 
-    def parse(value)
-      Array(value).map { |v| @type.parse(v) }
+    def parse(value, **options)
+      Array(value).map { |v| @type.parse(v, options) }
     end
   end
 end

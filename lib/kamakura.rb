@@ -9,7 +9,7 @@ module Kamakura
       define_attribute_reader_method(attribute)
     end
 
-    def parse(attributes = {})
+    def parse(attributes = {}, **options)
       new(attributes)
     end
 
