@@ -10,7 +10,13 @@ module Kamakura
       @key = key ? key.to_sym : @name
 
       if type.is_a?(Array)
-        @type = CollectionType.new(type[0])
+        if value_type = Kamakura.lookup_value_type(type[0])
+          @type = CollectionType.new(value_type)
+        else
+          @type = CollectionType.new(type[0])
+        end
+      elsif value_type = Kamakura.lookup_value_type(type)
+        @type = value_type
       else
         @type = type
       end

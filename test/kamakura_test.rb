@@ -4,19 +4,19 @@ class KamakuraTest < Minitest::Test
   class Address
     include Kamakura
 
-    attribute :country, String
-    attribute :state, String
+    attribute :country, :string
+    attribute :state, :string
   end
 
   class User
     include Kamakura
 
-    attribute :name, String
-    attribute :age, Integer
-    attribute :active, Boolean
-    attribute :friend_ids, [Integer]
+    attribute :name, :string
+    attribute :age, :integer
+    attribute :active, :boolean
+    attribute :friend_ids, [:integer]
     attribute :address, Address
-    attribute :card_number, Integer, key: :cardNumber
+    attribute :card_number, :integer, key: :cardNumber
   end
 
   def test_attributes
