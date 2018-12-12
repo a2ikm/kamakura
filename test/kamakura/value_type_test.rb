@@ -35,6 +35,7 @@ class KamakuraValueTypeTest < Minitest::Test
     time = Kamakura.lookup_value_type(:time)
 
     assert_nil time.parse(nil)
+    assert_equal Time.at(1), time.parse(Time.at(1))
     assert_equal Time.at(1), time.parse(1)
     assert_equal Time.at(1), time.parse("1")
   end
@@ -43,6 +44,9 @@ class KamakuraValueTypeTest < Minitest::Test
     date = Kamakura.lookup_value_type(:date)
 
     assert_nil date.parse(nil, format: :any)
+
+    today = Date.today
+    assert_equal today, date.parse(today, format: :any)
 
     {
       httpdate:   ["Sat, 03 Feb 2001 04:05:06 GMT"],
@@ -80,6 +84,9 @@ class KamakuraValueTypeTest < Minitest::Test
     datetime = Kamakura.lookup_value_type(:datetime)
 
     assert_nil datetime.parse(nil, format: :any)
+
+    now = DateTime.now
+    assert_equal now, datetime.parse(now, format: :any)
 
     {
       httpdate:   ["Sat, 03 Feb 2001 04:05:06 GMT"],

@@ -40,7 +40,13 @@ module Kamakura
   end
 
   define_value_type(:time) do |value, **options|
-    value.nil? ? nil : ::Time.at(value.to_i)
+    if value.nil?
+      nil
+    elsif value.is_a?(Time)
+      value
+    else
+      Time.at(value.to_i)
+    end
   end
 
   DATE_FORMATS = {
@@ -57,6 +63,8 @@ module Kamakura
   define_value_type(:date) do |value, **options|
     if value.nil?
       nil
+    elsif value.is_a?(Date)
+      value
     else
       format = options[:format]
       if parser = DATE_FORMATS[format]
@@ -83,6 +91,8 @@ module Kamakura
   define_value_type(:datetime) do |value, **options|
     if value.nil?
       nil
+    elsif value.is_a?(DateTime)
+      value
     else
       format = options[:format]
       if parser = DATETIME_FORMATS[format]
