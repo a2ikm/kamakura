@@ -1,3 +1,5 @@
+require "date"
+
 module Kamakura
   class ValueType
     def initialize(&parser)
@@ -39,5 +41,57 @@ module Kamakura
 
   define_value_type(:time) do |value, **options|
     value.nil? ? nil : ::Time.at(value.to_i)
+  end
+
+  DATE_FORMATS = {
+    httpdate:   ->(value) { Date.httpdate(value) },
+    iso8601:    ->(value) { Date.iso8601(value) },
+    jd:         ->(value) { Date.jd(value) },
+    jisx8601:   ->(value) { Date.jisx8601(value) },
+    rfc2822:    ->(value) { Date.rfc2822(value) },
+    rfc3339:    ->(value) { Date.rfc3339(value) },
+    rfc822:     ->(value) { Date.rfc822(value) },
+    xmlschema:  ->(value) { Date.xmlschema(value) },
+  }
+
+  define_value_type(:date) do |value, **options|
+    if value.nil?
+      nil
+    else
+      format = options[:format]
+      if parser = DATE_FORMATS[format]
+        parser.call(value)
+      elsif format.is_a?(String)
+        Date.strptime(value, format)
+      else
+        Date.parse(value)
+      end
+    end
+  end
+
+  DATETIME_FORMATS = {
+    httpdate:   ->(value) { DateTime.httpdate(value) },
+    iso8601:    ->(value) { DateTime.iso8601(value) },
+    jd:         ->(value) { DateTime.jd(value) },
+    jisx8601:   ->(value) { DateTime.jisx8601(value) },
+    rfc2822:    ->(value) { DateTime.rfc2822(value) },
+    rfc3339:    ->(value) { DateTime.rfc3339(value) },
+    rfc822:     ->(value) { DateTime.rfc822(value) },
+    xmlschema:  ->(value) { DateTime.xmlschema(value) },
+  }
+
+  define_value_type(:datetime) do |value, **options|
+    if value.nil?
+      nil
+    else
+      format = options[:format]
+      if parser = DATETIME_FORMATS[format]
+        parser.call(value)
+      elsif format.is_a?(String)
+        DateTime.strptime(value, format)
+      else
+        DateTime.parse(value)
+      end
+    end
   end
 end
